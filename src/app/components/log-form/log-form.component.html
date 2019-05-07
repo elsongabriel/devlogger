@@ -1,3 +1,22 @@
-<p>
-    log-form works!
-</p>
+<div class="card card-body">
+    <form #logForm="ngForm" (ngSubmit)="onSubmit(logForm)">
+        <div class="form-group">
+            <input type="text" class="form-control"
+                   placeholder="Adicione um log..."
+                   id="text" name="text"
+                   [(ngModel)]="log.text"
+                   [ngClass]="{'is-invalid':logText.errors && logText.touched}"
+                   #logText="ngModel" minlength="5" maxlength="50" required>
+            <div [hidden]="!logText.errors?.required" class="invalid-feedback">Log obrigatório</div>
+            <div [hidden]="!logText.errors?.minlength" class="invalid-feedback">
+                Log deve possuir mais de 5 caracteres
+            </div>
+            <div [hidden]="!logText.errors?.maxlength" class="invalid-feedback">
+                Log deve possuir no máximo 50 caracteres
+            </div>
+        </div>
+        <input type="hidden" [(ngModel)]="log.id" id="id" name="id">
+        <input type="submit" class="btn btn-primary" value="Adicionar" [disabled]="checkMinLength(log, 5)">
+        <button type="button" class="btn btn-warning ml-1" [hidden]="!log.text" (click)="clearForm()">Limpar</button>
+    </form>
+</div>
